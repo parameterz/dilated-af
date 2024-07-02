@@ -49,8 +49,8 @@ $(document).ready(function() {
         const rows = heightData.map(entry => {
             const ulnNORRE = calculateULN(entry.cm, 'NORRE', site, gender);
             const ulnWASE = calculateULN(entry.cm, 'WASE', site, gender, ageGroup);
-            const ulnNORREDisplay = ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
-            const ulnWASEDisplay = ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
+            const ulnNORREDisplay = `${ulnNORRE} cm`; //ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
+            const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
             return `<tr>
                         <td>${entry.cm} cm</td>
                         <td>${entry.feet}' ${entry.inches}"</td>
