@@ -20,21 +20,29 @@
       <form id="aortaForm">
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
         </select>
         <label for="site">Site:</label>
         <select id="site" name="site" required>
-            <option value="SOV">SOV</option>
-            <option value="STJ">STJ</option>
-            <option value="AAO">AAO</option>
+          <option value="SOV">SOV</option>
+          <option value="STJ">STJ</option>
+          <option value="AAO">AAO</option>
+        </select>
+        <label for="ageGroup" id="ageGroupLabel" style="display: none"
+          >Age Group:</label
+        >
+        <select id="ageGroup" name="ageGroup" style="display: none">
+          <option value="18-40">18-40</option>
+          <option value="41-65">41-65</option>
+          <option value=">65">>65</option>
         </select>
         <button type="submit">Show Table</button>
-    </form>
-    <section id="results">
+      </form>
+      <section id="results">
         <h2>Results:</h2>
         <div id="resultsContainer"></div>
-    </section>
+      </section>
     </main>
   </body>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

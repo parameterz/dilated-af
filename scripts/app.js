@@ -1,9 +1,24 @@
 $(document).ready(function() {
     const data = {
+        NORRE: {
         SOV: { female: 22.1, male: 23.2 },
         STJ: { female: 19.4, male: 19.8 },
         AAO: { female: 21.1, male: 21.4 }
-    };
+        },
+        WASE: {
+            SOV: {
+                "18-40": {female: 22, male: 21.8},
+                "41-65": {female: 22.6, male: 23.2},
+                ">65": {female: 23.9, male: 24.3}
+            },
+            STJ : {
+            "18-40": {female: 19.2, male: 19},
+            "41-65": {female: 20.2, male: 20.7},
+            ">65": {female: 21, male: 21.7}
+            }
+        },
+    }
+    
 
     function generateHeightData(startCm, endCm) {
         const heightData = [];
