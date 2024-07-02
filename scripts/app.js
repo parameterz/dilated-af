@@ -59,8 +59,8 @@ $(document).ready(function() {
                     </tr>`;
         }).join('');
         return `
-            <table>
-                <thead>
+            <table class="striped">
+                <thead data-theme="light">
                     <tr>
                         ${headers.map(header => `<th>${header}</th>`).join('')}
                     </tr>

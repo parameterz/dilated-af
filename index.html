@@ -1,46 +1,120 @@
-<!DOCTYPE html >
-<html lang="en" data-theme="dark" >
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dilated Aorta Finder (Dilated AF)</title>
-    <link rel="stylesheet" href="css/pico.slate.min.css">
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dilated AF (Dilated Aorta Finder)</title>
+    <link rel="stylesheet" href="css/pico.slate.min.css" />
+    <style>
+         
+        /* Custom CSS for emphasizing the results table */
+         #resultsContainer table {
+            width: 100%;
+            margin: 20px 0;
+            font-size: 1.2em;
+            border-collapse: collapse;
+        }
+        #resultsContainer th, #resultsContainer td {
+            padding: 10px;
+            border: 1px solid #382f2f;
+        }
+        
+    </style>
+  </head>
+  <body>
+    <main class="container">
     <header>
-        <h1>Dilated Aorta Finder (Dilated AF)</h1>
+      <h1>Dilated AF </h1>
+      <p>(Dilated Aorta Finder)</p>
     </header>
-    <main>
-        <form id="aortaForm">
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-            </select>
-            <label for="ageGroup">Age Group:</label>
-            <select id="ageGroup" name="ageGroup" required>
-                <option value="18-40">18-40</option>
-                <option value="41-65">41-65</option>
-                <option value=">65">>65</option>
-            </select>
-            <fieldset>
-                <legend>Enter Height</legend>
-                <label for="heightCm">(cm):</label>
-                <input type="number" id="heightCm" name="heightCm" min="100" max="250" step="0.1">
-                <p>-OR-</p>
-                <label for="heightFeet">(feet):</label>
-                <input type="number" id="heightFeet" name="heightFeet" min="3" max="8">
-                <label for="heightInches">(inches):</label>
-                <input type="number" id="heightInches" name="heightInches" min="0" max="11">
-            </fieldset>
-            <button type="submit">Show Results</button>
-        </form>
-        <section id="results">
-            <h2>Results:</h2>
-            <div id="resultsContainer"></div>
-        </section>
+      <p>Firstly, measure like this:</p>
+      <div class="image-stage">
+        <img src="img/measure-like-this.png" />
+      </div>
+      <form id="aortaForm">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+        <label for="ageGroup">Age Group:</label>
+        <select id="ageGroup" name="ageGroup" required>
+          <option value="18-40">18-40</option>
+          <option value="41-65">41-65</option>
+          <option value=">65">>65</option>
+        </select>
+        <fieldset>
+          <legend>Enter Height</legend>
+          <label for="heightCm">(cm):</label>
+          <input
+            type="number"
+            id="heightCm"
+            name="heightCm"
+            min="100"
+            max="250"
+            step="0.1"
+          />
+          <p>-OR-</p>
+          <label for="heightFeet">(feet):</label>
+          <input
+            type="number"
+            id="heightFeet"
+            name="heightFeet"
+            min="3"
+            max="8"
+          />
+          <label for="heightInches">(inches):</label>
+          <input
+            type="number"
+            id="heightInches"
+            name="heightInches"
+            min="0"
+            max="11"
+          />
+        </fieldset>
+        <button type="submit">Show Results</button>
+      </form>
+      <hr />
+      <section id="results">
+        <h2>Results:</h2>
+        <div id="resultsContainer"></div>
+      </section>
+      <hr />
+      <section id="citations">
+        <h3>Citations</h3>
+        <article>
+          <h4>NORRE Study</h4>
+          <p>
+            Saura, D., et al. 
+            (2017). Two-dimensional transthoracic echocardiographic normal
+            reference ranges for proximal aorta dimensions: results from the
+            EACVI NORRE study. European heart journal. Cardiovascular Imaging,
+            18(2), 167–179.
+            <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank"
+              >https://doi.org/10.1093/ehjci/jew053</a
+            >
+          </p>
+        </article>
+        <article>
+          <h4>WASE Study</h4>
+          <p>
+            Patel, H. N., et al., WASE Investigators (2022). 
+            Normal Values of Aortic Root Size According to
+            Age, Sex, and Race: Results of the World Alliance of Societies of
+            Echocardiography Study. Journal of the American Society of
+            Echocardiography: official publication of the American Society of
+            Echocardiography, 35(3), 267–274.
+            <a href="https://doi.org/10.1016/j.echo.2021.09.011" target="_blank"
+              >https://doi.org/10.1016/j.echo.2021.09.011</a
+            >
+          </p>
+        </article>
+      </section>
+      <footer>
+        <p>By Dan Dyar, MA, RDCS, FASE (2024)</p>
+      </footer>
     </main>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/app.js"></script>
-</body>
+  </body>
 </html>
