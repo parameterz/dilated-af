@@ -19,23 +19,23 @@ $(document).ready(function() {
         }
     };
 
-    function generateHeightData(startCm, endCm) {
-        const heightData = [];
-        for (let cm = startCm; cm <= endCm; cm += 1) {
-            const inches = cm / 2.54;
-            const feet = Math.floor(inches / 12);
-            const remainingInches = inches % 12;
-            heightData.push({
-                cm: cm,
-                feet: feet,
-                inches: remainingInches.toFixed(0)
-            });
+    function convertHeightToCm(feet, inches) {
+        return (feet * 30.48) + (inches * 2.54);
+    }
+
+    function getHeightCm() {
+        const heightCm = parseFloat($('#heightCm').val());
+        const heightFeet = parseInt($('#heightFeet').val());
+        const heightInches = parseInt($('#heightInches').val());
+        if (!isNaN(heightCm)) {
+            return heightCm;
+        } else if (!isNaN(heightFeet) && !isNaN(heightInches)) {
+            return convertHeightToCm(heightFeet, heightInches);
         }
-        return heightData;
+        return null;
     }
 
     function calculateULN(heightCm, study, site, gender, ageGroup) {
-        console.log(heightCm, study, site, gender, ageGroup);
         if (study === "NORRE") {
             return ((heightCm / 100) * data[study][site][gender]).toFixed(1);
         } else if (study === "WASE" && site !== "AAO") {
@@ -44,29 +44,23 @@ $(document).ready(function() {
         return "n/a";
     }
 
-    function createTable(heightData, site, gender, ageGroup) {
-        const headers = ['Height (cm)', 'Height (ft & in)', 'Height (in)', 'NORRE', 'WASE'];
-        const rows = heightData.map(entry => {
-            const ulnNORRE = calculateULN(entry.cm, 'NORRE', site, gender);
-            const ulnWASE = calculateULN(entry.cm, 'WASE', site, gender, ageGroup);
-            const ulnNORREDisplay = `${ulnNORRE} cm`; //ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
-            const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
+    function createResultsTable(heightCm, gender, ageGroup) {
+        const headers = ['Site', 'ULN (NORRE)', 'ULN (WASE)'];
+        const sites = ['SOV', 'STJ', 'AAO'];
+        const rows = sites.map(site => {
+            const ulnNORRE = calculateULN(heightCm, 'NORRE', site, gender);
+            const ulnWASE = site !== "AAO" ? calculateULN(heightCm, 'WASE', site, gender, ageGroup) : "n/a";
+            const ulnNORREDisplay = ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
+            const ulnWASEDisplay = ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
             return `<tr>
-                        <td>${entry.cm} cm</td>
-                        <td>${entry.feet}' ${entry.inches}"</td>
-                        <td>${(entry.cm / 2.54).toFixed(1)} in</td>
+                        <td>${site}</td>
                         <td>${ulnNORREDisplay}</td>
                         <td>${ulnWASEDisplay}</td>
                     </tr>`;
         }).join('');
         return `
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3">Height</th>
-                        <th colspan="2">ULN (${site})</th>
-                        
-                    </tr>
+            <table class="striped">
+                <thead data-theme="light">
                     <tr>
                         ${headers.map(header => `<th>${header}</th>`).join('')}
                     </tr>
@@ -78,25 +72,18 @@ $(document).ready(function() {
         `;
     }
 
-    $('#site').on('change', function() {
-        const selectedSite = $(this).val();
-        if (selectedSite === 'SOV' || selectedSite === 'STJ') {
-            $('#ageGroup, #ageGroupLabel').show();
-        } else {
-            $('#ageGroup, #ageGroupLabel').hide();
-        }
-    });
-
     $('#aortaForm').on('submit', function(event) {
         event.preventDefault();
         const gender = $('#gender').val();
-        const site = $('#site').val();
-        const ageGroup = $('#ageGroup').val() || '18-40'; // default age group if not applicable
-        const heightData = generateHeightData(140, 210);
-        const resultsTable = createTable(heightData, site, gender, ageGroup);
-        $('#resultsContainer').html(resultsTable);
-        $('#resultsTitle').html(`Results: (${site})`);
-        scrollToResults();
+        const ageGroup = $('#ageGroup').val();
+        const heightCm = getHeightCm();
+        if (heightCm) {
+            const resultsTable = createResultsTable(heightCm, gender, ageGroup);
+            $('#resultsContainer').html(resultsTable);
+            scrollToResults();
+        } else {
+            alert('Please enter a valid height.');
+        }
     });
 
     function scrollToResults() {
