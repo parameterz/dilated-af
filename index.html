@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="css/pico.slate.min.css" />
+    <title>Dilated AF: Is this aorta normal?</title>
+  </head>
+  <body>
+    <header>
+      <h1>Dilated Aorta Finder</h1>
+      <h2>(Dilated AF)</h2>
+    </header>
+    <main class="container">
+      <p>Firstly, measure like this:</p>
+      <div class="image-stage">
+        <img src="img/measure-like-this.png" />
+      </div>
+      <form id="aortaForm">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+        </select>
+        <label for="site">Site:</label>
+        <select id="site" name="site" required>
+            <option value="SOV">SOV</option>
+            <option value="STJ">STJ</option>
+            <option value="AAO">AAO</option>
+        </select>
+        <button type="submit">Show Table</button>
+    </form>
+    <section id="results">
+        <h2>Results:</h2>
+        <div id="resultsContainer"></div>
+    </section>
+    </main>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="scripts/app.js"></script>
+</html>
