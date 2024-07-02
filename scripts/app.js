@@ -51,7 +51,8 @@ $(document).ready(function() {
             const ulnNORRE = calculateULN(heightCm, 'NORRE', site, gender);
             const ulnWASE = site !== "AAO" ? calculateULN(heightCm, 'WASE', site, gender, ageGroup) : "n/a";
             const ulnNORREDisplay = `${ulnNORRE} cm`; // ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
-            const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
+            //const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
+            const ulnWASEDisplay = site !=="AAO" ? `${ulnWASE} cm` : `${ulnWASE}`;
             return `<tr>
                         <td>${site}</td>
                         <td>${ulnNORREDisplay}</td>
@@ -71,7 +72,8 @@ $(document).ready(function() {
             </table>
         `;
     }
-
+    //hide the results explanation
+    $('#resultsDescription').hide();
     $('#aortaForm').on('submit', function(event) {
         event.preventDefault();
         const gender = $('#gender').val();
@@ -80,6 +82,8 @@ $(document).ready(function() {
         if (heightCm) {
             const resultsTable = createResultsTable(heightCm, gender, ageGroup);
             $('#resultsContainer').html(resultsTable);
+            $('#resultsDescription').show();
+            $('#awaitingResults').hide();
             scrollToResults();
         } else {
             alert('Please enter a valid height.');
