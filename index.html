@@ -6,27 +6,26 @@
     <title>Dilated AF (Dilated Aorta Finder)</title>
     <link rel="stylesheet" href="css/pico.slate.min.css" />
     <style>
-         
-        /* Custom CSS for emphasizing the results table */
-         #resultsContainer table {
-            width: 100%;
-            margin: 20px 0;
-            font-size: 1.2em;
-            border-collapse: collapse;
-        }
-        #resultsContainer th, #resultsContainer td {
-            padding: 10px;
-            border: 1px solid #382f2f;
-        }
-        
+      /* Custom CSS for emphasizing the results table */
+      #resultsContainer table {
+        width: 100%;
+        margin: 20px 0;
+        font-size: 1.2em;
+        border-collapse: collapse;
+      }
+      #resultsContainer th,
+      #resultsContainer td {
+        padding: 10px;
+        border: 1px solid #382f2f;
+      }
     </style>
   </head>
   <body>
     <main class="container">
-    <header>
-      <h1>Dilated AF </h1>
-      <p>(Dilated Aorta Finder)</p>
-    </header>
+      <header>
+        <h1>Dilated AF</h1>
+        <p>(Dilated Aorta Finder)</p>
+      </header>
       <p>Firstly, measure like this:</p>
       <div class="image-stage">
         <img src="img/measure-like-this.png" />
@@ -77,9 +76,13 @@
       <hr />
       <section id="results">
         <h2>Results:</h2>
-        <p id="awaitingResults">Enter a valid height (in cm or feet & inches) to see the predicted upper limits of normal (ULN).</p>
-        <p id="resultsDescription"> These are the upper limits of normal (ULN). Measured values that are greater
-          than the displayed limits are considered dilated. 
+        <p id="awaitingResults">
+          Enter a valid height (in cm or feet & inches) to see the predicted
+          upper limits of normal (ULN).
+        </p>
+        <p id="resultsDescription">
+          These are the upper limits of normal (ULN). Measured values that are
+          greater than the displayed limits are considered dilated.
         </p>
         <div id="resultsContainer"></div>
       </section>
@@ -87,13 +90,24 @@
       <section id="citations">
         <h3>Citations</h3>
         <article>
+          <cite
+            >Reference image modified from
+            <a
+              href="https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004"
+              >Oxborough et al.</a
+            >
+            used under
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
+            >.</cite
+          >
+        </article>
+        <article>
           <h4>NORRE Study</h4>
           <p>
-            Saura, D., et al. 
-            (2017). Two-dimensional transthoracic echocardiographic normal
-            reference ranges for proximal aorta dimensions: results from the
-            EACVI NORRE study. European heart journal. Cardiovascular Imaging,
-            18(2), 167–179.
+            Saura, D., et al. (2017). Two-dimensional transthoracic
+            echocardiographic normal reference ranges for proximal aorta
+            dimensions: results from the EACVI NORRE study. European heart
+            journal. Cardiovascular Imaging, 18(2), 167–179.
             <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank"
               >https://doi.org/10.1093/ehjci/jew053</a
             >
@@ -102,12 +116,11 @@
         <article>
           <h4>WASE Study</h4>
           <p>
-            Patel, H. N., et al., WASE Investigators (2022). 
-            Normal Values of Aortic Root Size According to
-            Age, Sex, and Race: Results of the World Alliance of Societies of
-            Echocardiography Study. Journal of the American Society of
-            Echocardiography: official publication of the American Society of
-            Echocardiography, 35(3), 267–274.
+            Patel, H. N., et al., WASE Investigators (2022). Normal Values of
+            Aortic Root Size According to Age, Sex, and Race: Results of the
+            World Alliance of Societies of Echocardiography Study. Journal of
+            the American Society of Echocardiography: official publication of
+            the American Society of Echocardiography, 35(3), 267–274.
             <a href="https://doi.org/10.1016/j.echo.2021.09.011" target="_blank"
               >https://doi.org/10.1016/j.echo.2021.09.011</a
             >
