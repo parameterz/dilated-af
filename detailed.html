@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detailed Analysis - Dilated AF</title>
+    <link rel="stylesheet" href="css/pico.slate.min.css" />
+    <style>
+      /* Custom CSS for emphasizing the results */
+      h1 a {
+        text-decoration: none;
+      }
+      article label {
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .index-result {
+        margin-bottom: 12px;
+        font-size: 1.1em;
+      }
+
+      .highlight {
+        padding: 2px;
+        padding-bottom: 2px;
+        border-radius: 5px;
+      }
+
+      .exceeds-uln {
+        color: #d10101; /* Different color for values exceeding ULN */
+        font-weight: bold;
+      }
+
+      .exceeds-uln::after {
+        content: "!";
+        color: #d10101; /* Optional: Change color of the exclamation mark */
+        margin-left: 5px; /* Optional: Add some space between the number and the exclamation mark */
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1><a href="/">Dilated AF</a></h1>
+        <p>Detailed Analysis</p>
+      </header>
+      <form id="detailedAortaForm">
+        <fieldset>
+          <legend>Enter Measurements</legend>
+          <label for="heightCm2">Height (cm):</label>
+          <input
+            type="number"
+            id="heightCm2"
+            name="heightCm2"
+            min="100"
+            max="250"
+            step="0.1"
+            required
+          />
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender" required>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+          <label for="timing">Timing:</label>
+          <select id="timing" name="timing" required>
+            <option value="diastole">Diastole</option>
+            <option value="systole">Mid-Systole</option>
+          </select>
+          <label for="convention">Convention:</label>
+          <select id="convention" name="convention" required>
+            <option value="leading">Leading - Leading</option>
+            <option value="inside">Inside - Inside</option>
+          </select>
+          <article data-theme="dark">
+            <label for="SOV">SOV (mm):</label>
+            <input type="number" id="SOV" name="SOV" min="0" step="0.1" />
+            <div id="SOV-index" class="index-result highlight"></div>
+          </article>
+          <article data-theme="dark">
+            <label for="STJ">STJ (mm):</label>
+            <input type="number" id="STJ" name="STJ" min="0" step="0.1" />
+            <div id="STJ-index" class="index-result highlight"></div>
+          </article>
+          <article data-theme="dark">
+            <label for="AAO">AAO (mm):</label>
+            <input type="number" id="AAO" name="AAO" min="0" step="0.1" />
+            <div id="AAO-index" class="index-result highlight"></div>
+          </article>
+          <article data-theme="dark" class="optional-measurements">
+            <label for="RCOR">Right Coronary Sinus (mm):</label>
+            <input type="number" id="RCOR" name="RCOR" min="0" step="0.1" />
+            <div id="RCOR-index" class="index-result highlight"></div>
+          </article>
+          <article data-theme="dark" class="optional-measurements">
+            <label for="LCOR">Left Coronary Sinus (mm):</label>
+            <input type="number" id="LCOR" name="LCOR" min="0" step="0.1" />
+            <div id="LCOR-index" class="index-result highlight"></div>
+          </article>
+          <article data-theme="dark" class="optional-measurements">
+            <label for="NONCOR">Non Coronary Sinus (mm):</label>
+            <input type="number" id="NONCOR" name="NONCOR" min="0" step="0.1" />
+            <div id="NONCOR-index" class="index-result highlight"></div>
+          </article>
+        </fieldset>
+      </form>
+      <hr />
+      <section id="citations">
+        <h3>Citations</h3>
+        <article>
+          <cite
+            >Reference image modified from
+            <a
+              href="https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004"
+              >Oxborough et al.</a
+            >
+            used under
+            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
+            >.</cite
+          >
+        </article>
+        <article>
+          <h4>NORRE Study</h4>
+          <p>
+            Saura, D., et al. (2017). Two-dimensional transthoracic
+            echocardiographic normal reference ranges for proximal aorta
+            dimensions: results from the EACVI NORRE study. European heart
+            journal. Cardiovascular Imaging, 18(2), 167–179.
+            <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank"
+              >https://doi.org/10.1093/ehjci/jew053</a
+            >
+          </p>
+        </article>
+      </section>
+      <footer>
+        <p>By Dan Dyar, MA, RDCS, FASE (2024)</p>
+      </footer>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="scripts/shared.js"></script>
+    <script src="scripts/detailed.js"></script>
+  </body>
+</html>

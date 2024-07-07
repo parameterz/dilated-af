@@ -50,9 +50,9 @@ $(document).ready(function() {
         const rows = sites.map(site => {
             const ulnNORRE = calculateULN(heightCm, 'NORRE', site, gender);
             const ulnWASE = site !== "AAO" ? calculateULN(heightCm, 'WASE', site, gender, ageGroup) : "n/a";
-            const ulnNORREDisplay = `${ulnNORRE} cm`; // ulnNORRE > 40 ? `${ulnNORRE} cm *` : `${ulnNORRE} cm`;
-            //const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} cm *` : `${ulnWASE}`;
-            const ulnWASEDisplay = site !=="AAO" ? `${ulnWASE} cm` : `${ulnWASE}`;
+            const ulnNORREDisplay = `${ulnNORRE} mm`; // ulnNORRE > 40 ? `${ulnNORRE} mm *` : `${ulnNORRE} cm`;
+            //const ulnWASEDisplay = `${ulnWASE} cm`; //ulnWASE > 40 ? `${ulnWASE} mm *` : `${ulnWASE}`;
+            const ulnWASEDisplay = site !=="AAO" ? `${ulnWASE} mm` : `${ulnWASE}`;
             return `<tr>
                         <td>${site}</td>
                         <td>${ulnNORREDisplay}</td>
