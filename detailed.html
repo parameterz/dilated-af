@@ -10,6 +10,17 @@
       h1 a {
         text-decoration: none;
       }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .centered-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       article label {
         font-size: 1.2em;
         font-weight: bold;
@@ -73,6 +84,32 @@
             <option value="leading">Leading - Leading</option>
             <option value="inside">Inside - Inside</option>
           </select>
+          <div data-theme="dark" id="images">
+            <img
+              id="systole_inside"
+              src="img/systole_inside.png"
+              alt="Systole Inside"
+              class="centered-image hidden"
+            />
+            <img
+              id="systole_leading"
+              src="/img/systole_leading.png"
+              alt="Systole Leading"
+              class="centered-image hidden"
+            />
+            <img
+              id="diastole_inside"
+              src="/img/diastole_inside.png"
+              alt="Diastole Inside"
+              class="centered-image hidden"
+            />
+            <img
+              id="diastole_leading"
+              src="/img/diastole_leading.png"
+              alt="Diastole Leading"
+              class="centered-image hidden"
+            />
+          </div>
           <article data-theme="dark">
             <label for="SOV">SOV (mm):</label>
             <input type="number" id="SOV" name="SOV" min="0" step="0.1" />

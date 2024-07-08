@@ -45,26 +45,38 @@ $(document).ready(function() {
         }
     }
 
-// Function to update all indices
-function updateAllIndices() {
-    const heightCm = getHeightCm();
-    const gender = getGender();
-    const timing = getTiming();
-    const convention = getConvention();
-    const measurements = ['SOV', 'STJ', 'AAO'];
+    // Function to update all indices
+    function updateAllIndices() {
+        const heightCm = getHeightCm();
+        const gender = getGender();
+        const timing = getTiming();
+        const convention = getConvention();
+        const measurements = ['SOV', 'STJ', 'AAO'];
 
-    // Add the conditional measurements if the timing is diastole and convention is inside
-    if (timing === 'diastole' && convention === 'inside') {
-        measurements.push('RCOR', 'LCOR', 'NONCOR');
-        $('.optional-measurements').show();
-    } else {
-        $('.optional-measurements').hide();
+        // Add the conditional measurements if the timing is diastole and convention is inside
+        if (timing === 'diastole' && convention === 'inside') {
+            measurements.push('RCOR', 'LCOR', 'NONCOR');
+            $('.optional-measurements').show();
+        } else {
+            $('.optional-measurements').hide();
+        }
+
+        measurements.forEach(measurement => updateIndex(measurement, heightCm, gender, timing, convention));
     }
 
-    measurements.forEach(measurement => updateIndex(measurement, heightCm, gender, timing, convention));
-}
+    // Function to update the displayed image based on timing and convention
+    function updateImage() {
+        const timing = getTiming();
+        const convention = getConvention();
+        $('#images img').addClass('hidden'); // Hide all images
+        $(`#${timing}_${convention}`).removeClass('hidden'); // Show the selected image
+    }
+
     // Attach event listeners to inputs and select elements
-    $('#detailedAortaForm input, #detailedAortaForm select').on('input change', updateAllIndices);
+    $('#detailedAortaForm input, #detailedAortaForm select').on('input change', function() {
+        updateAllIndices();
+        updateImage();
+    });
 
     // Set initial values if they exist in localStorage
     const initialHeightCm = localStorage.getItem('heightCm');
@@ -84,6 +96,7 @@ function updateAllIndices() {
         $('#convention').val(initialConvention);
     }
 
-    // Trigger initial calculation if data is available
+    // Trigger initial calculation and image update if data is available
     updateAllIndices();
+    updateImage();
 });
