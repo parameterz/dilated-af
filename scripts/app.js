@@ -90,6 +90,20 @@ $(document).ready(function() {
         }
     });
 
+    $('#diveDeeperBtn').on('click', function() {
+        const heightCm = getHeightCm();
+        const gender = $('#gender').val();
+        if (heightCm && gender) {
+            // Store the height and gender in localStorage
+            localStorage.setItem('heightCm', heightCm);
+            localStorage.setItem('gender', gender);
+            // Navigate to the detailed analysis page
+            window.location.href = 'detailed.html';
+        } else {
+            alert('Please enter a valid height and select a gender before proceeding.');
+        }
+    });
+
     function scrollToResults() {
         const resultsSection = document.getElementById('results');
         resultsSection.scrollIntoView({ behavior: 'smooth' });

@@ -4,12 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detailed Analysis - Dilated AF</title>
-    <link rel="stylesheet" href="css/pico.slate.min.css" />
+    <meta name="description" content="Detailed echocardiographic analysis of aortic size measurements to assist with the evaluation of aortic dilation.">
+    <meta name="keywords" content="echocardiography, aortic dilation, aortic size, cardiology, heart health, medical analysis">
+    <meta name="author" content="Dan Dyar, MA, RDCS, FASE">    <link rel="stylesheet" href="css/pico.slate.min.css" />
     <style>
       /* Custom CSS for emphasizing the results */
       h1 a {
         text-decoration: none;
       }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .centered-image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       article label {
         font-size: 1.2em;
         font-weight: bold;
@@ -73,6 +86,38 @@
             <option value="leading">Leading - Leading</option>
             <option value="inside">Inside - Inside</option>
           </select>
+          <div data-theme="dark" id="images">
+            <img
+              id="systole_inside"
+              src="img/systole_inside.png"
+              alt="Systole Inside"
+              class="centered-image hidden"
+            />
+            <img
+              id="systole_leading"
+              src="/img/systole_leading.png"
+              alt="Systole Leading"
+              class="centered-image hidden"
+            />
+            <img
+              id="diastole_inside"
+              src="/img/diastole_inside.png"
+              alt="Diastole Inside"
+              class="centered-image hidden"
+            />
+            <img
+              id="diastole_leading"
+              src="/img/diastole_leading.png"
+              alt="Diastole Leading"
+              class="centered-image hidden"
+            />
+            <img
+              id="sax_diastole_inside"
+              src="/img/sax_diastole_inside.png"
+              alt="SAX Diastole Inside"
+              class="hidden centered-image"
+            />
+          </div>
           <article data-theme="dark">
             <label for="SOV">SOV (mm):</label>
             <input type="number" id="SOV" name="SOV" min="0" step="0.1" />
@@ -89,17 +134,17 @@
             <div id="AAO-index" class="index-result highlight"></div>
           </article>
           <article data-theme="dark" class="optional-measurements">
-            <label for="RCOR">Right Coronary Sinus (mm):</label>
+            <label for="RCOR">RCOR (mm):</label>
             <input type="number" id="RCOR" name="RCOR" min="0" step="0.1" />
             <div id="RCOR-index" class="index-result highlight"></div>
           </article>
           <article data-theme="dark" class="optional-measurements">
-            <label for="LCOR">Left Coronary Sinus (mm):</label>
+            <label for="LCOR">LCOR (mm):</label>
             <input type="number" id="LCOR" name="LCOR" min="0" step="0.1" />
             <div id="LCOR-index" class="index-result highlight"></div>
           </article>
           <article data-theme="dark" class="optional-measurements">
-            <label for="NONCOR">Non Coronary Sinus (mm):</label>
+            <label for="NONCOR">NONCOR (mm):</label>
             <input type="number" id="NONCOR" name="NONCOR" min="0" step="0.1" />
             <div id="NONCOR-index" class="index-result highlight"></div>
           </article>
@@ -110,13 +155,20 @@
         <h3>Citations</h3>
         <article>
           <cite
-            >Reference image modified from
+            >Reference image(s) modified from
             <a
               href="https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004"
+              target="_blank"
               >Oxborough et al.</a
             >
+            and
+            <a
+              href="https://doi.org/10.1093/ehjci/jew053"
+              target="_blank"
+              >Saura et al.
+            </a>
             used under
-            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a
             >.</cite
           >
         </article>
