@@ -25,23 +25,29 @@ $(document).ready(function () {
     const value = parseFloat($(`#${measurement}`).val());
     if (!isNaN(value) && heightCm && gender && timing && convention) {
       const { mean, sd } = data[timing][convention][measurement][gender];
-      const uln = (mean + 2 * sd).toFixed(1);
-      const equivalentMeasurement = (uln * (heightCm / 100)).toFixed(1);
+      const uln = parseFloat((mean + 2 * sd).toFixed(1));
+      const equivalentMeasurement = parseFloat(
+        (uln * (heightCm / 100)).toFixed(1)
+      );
 
-      const index = (value / (heightCm / 100)).toFixed(1);
-      const indexSpan = `<span class="${
-        parseFloat(index) > uln ? "exceeds-uln" : ""
-      }">${index}</span>`;
+      const index = parseFloat((value / (heightCm / 100)).toFixed(1));
+      const exceedsUlnClass = index > uln ? "exceeds-uln" : "";
+
+      const indexSpan = `<span class="${exceedsUlnClass}">${index.toFixed(
+        1
+      )}</span>`;
       const meanSpan = `<span>${mean}</span>`;
-      const ulnSpan = `<span>${uln}</span>`;
-      const eqMeasurementSpan = `<span>${equivalentMeasurement}</span>`;
+      const ulnSpan = `<span>${uln.toFixed(1)}</span>`;
+      const eqMeasurementSpan = `<span>${equivalentMeasurement.toFixed(
+        1
+      )}</span>`;
 
       $(`#${measurement}-index`).html(`
-                ${measurement} Index: ${indexSpan} <br>
-                Mean: ${meanSpan} <br>
-                ULN: ${ulnSpan} <br>
-                Equivalent ${measurement} at ULN: ${eqMeasurementSpan} mm
-            `);
+              ${measurement} Index: ${indexSpan} <br>
+              Mean: ${meanSpan} <br>
+              ULN: ${ulnSpan} <br>
+              Equivalent ${measurement} at ULN: ${eqMeasurementSpan} mm
+          `);
     } else {
       $(`#${measurement}-index`).html("");
     }
@@ -56,7 +62,6 @@ $(document).ready(function () {
     const measurements = ["SOV", "STJ", "AAO"];
 
     // Add the conditional measurements if the timing is diastole and convention is inside
-    //console.log(timing, convention);
     if (timing === "diastole" && convention === "inside") {
       measurements.push("RCOR", "LCOR", "NONCOR");
       $(".optional-measurements").show();
