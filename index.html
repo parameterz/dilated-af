@@ -21,21 +21,33 @@
       header.page p { color: var(--pico-muted-color); }
       .muted { color: var(--pico-muted-color); }
       .note { font-size: 0.85em; color: var(--pico-muted-color); }
-      .height-row { display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap; }
-      .height-row label { flex: 1 1 7rem; margin-bottom: 0; }
+      .height-row { display: flex; gap: 0.75rem; align-items: flex-end; }
+      .height-row label { flex: 1 1 0; min-width: 0; margin-bottom: 0; }
+      .height-row label:first-child { flex-grow: 1.4; }
       .height-row .or { padding-bottom: 0.9rem; color: var(--pico-muted-color); }
       #heightEcho { font-size: 0.85em; color: var(--pico-muted-color); min-height: 1.2em; }
-      .meas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0 1rem; }
       #images img { display: block; max-width: 100%; margin: 0.5rem auto; }
-      .ref-table { font-size: 1.1em; }
-      .ref-table td, .ref-table th { padding: 0.5rem 0.75rem; }
-      .seg-card header { display: flex; gap: 0.75rem; align-items: baseline; flex-wrap: wrap; }
+      @media (min-width: 1024px) {
+        .layout { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: 2rem; align-items: start; }
+      }
+      .seg-card { margin-bottom: 1rem; }
+      .seg-card header { display: flex; gap: 0.5rem 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 0; }
+      .seg-card header label { margin: 0; flex: 1 1 10rem; }
+      .seg-card .input-mm { display: inline-flex; align-items: center; gap: 0.4rem; }
+      .seg-card .input-mm input { width: 6.5rem; margin: 0; font-size: 1.15em; font-weight: 600; }
+      .seg-card .seg-summary { flex: 1 1 100%; display: flex; gap: 0.75rem; align-items: baseline; }
+      .seg-card .seg-summary:empty { display: none; }
+      .seg-body { margin-top: 0.75rem; }
+      .seg-body .ranges { margin: 0; font-size: 0.95em; }
       .seg-card .idx { font-size: 1.2em; }
       .seg-card.dilated { border-left: 4px solid var(--dilated); }
       .seg-card.small { border-left: 4px solid var(--small); }
       .seg-card.normal { border-left: 4px solid var(--normal); }
       .seg-table { font-size: 0.9em; margin-bottom: 0.75rem; }
-      .seg-table td, .seg-table th { padding: 0.35rem 0.5rem; white-space: nowrap; }
+      .seg-table td, .seg-table th { padding: 0.35rem 0.5rem; vertical-align: top; }
+      .seg-table small { display: block; }
+      .seg-table .st-dilated { color: var(--dilated); font-weight: 700; }
+      .seg-table .st-small { color: var(--small); font-weight: 700; }
       .badge { font-size: 0.8em; font-weight: 700; padding: 0.1em 0.5em; border-radius: 0.4em; border: 1px solid currentColor; }
       .badge.dilated { color: var(--dilated); }
       .badge.small { color: var(--small); }
@@ -55,7 +67,8 @@
         <p>(Dilated Aorta Finder) — height-indexed aortic dimensions</p>
       </header>
 
-      <form id="aortaForm" autocomplete="off">
+      <form id="aortaForm" autocomplete="off" class="layout">
+        <div class="col-left">
         <div class="grid">
           <label>
             Sex
@@ -99,8 +112,8 @@
           <label>
             Convention
             <select id="convention">
-              <option value="leading">Leading edge – leading edge</option>
-              <option value="inside">Inner edge – inner edge</option>
+              <option value="leading">Leading edge</option>
+              <option value="inside">Inner edge</option>
             </select>
           </label>
         </div>
@@ -115,18 +128,6 @@
             <img data-show="sax" src="img/sax_diastole_inside.png" alt="Short axis, end-diastole, inner edge: sinus-to-commissure" />
           </div>
         </details>
-
-        <fieldset>
-          <legend>Measurements (mm) <small class="muted">— optional; leave blank to see reference ranges only</small></legend>
-          <div class="meas-grid">
-            <label>SOV<input type="number" id="SOV" min="0" step="0.1" inputmode="decimal" /></label>
-            <label>STJ<input type="number" id="STJ" min="0" step="0.1" inputmode="decimal" /></label>
-            <label>AAO<input type="number" id="AAO" min="0" step="0.1" inputmode="decimal" /></label>
-            <label class="cusp" hidden>RCOR<input type="number" id="RCOR" min="0" step="0.1" inputmode="decimal" /></label>
-            <label class="cusp" hidden>LCOR<input type="number" id="LCOR" min="0" step="0.1" inputmode="decimal" /></label>
-            <label class="cusp" hidden>NONCOR<input type="number" id="NONCOR" min="0" step="0.1" inputmode="decimal" /></label>
-          </div>
-        </fieldset>
 
         <details>
           <summary>Report options</summary>
@@ -144,19 +145,65 @@
         </details>
 
         <button type="button" id="clearBtn" class="secondary outline">Clear patient</button>
-      </form>
-
-      <hr />
-
-      <section id="results">
-        <h2>Results</h2>
-        <p id="awaiting" class="muted">Enter a height (100–250 cm) to see reference ranges.</p>
-        <div id="refTable"></div>
-        <div id="segResults"></div>
-        <div id="copyAllWrap" hidden>
-          <button type="button" id="copyAll" class="copy-btn">Copy all statements</button>
         </div>
-      </section>
+
+        <section class="col-right" id="results">
+          <p id="awaiting" class="muted">Enter a height (100–250 cm) to see reference ranges.</p>
+          <div id="cards">
+            <article class="seg-card" id="card-SOV">
+              <header>
+                <label for="SOV"><strong>SOV</strong> <small class="muted">sinuses of Valsalva</small></label>
+                <span class="input-mm"><input type="number" id="SOV" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="SOV (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+            <article class="seg-card" id="card-STJ">
+              <header>
+                <label for="STJ"><strong>STJ</strong> <small class="muted">sinotubular junction</small></label>
+                <span class="input-mm"><input type="number" id="STJ" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="STJ (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+            <article class="seg-card" id="card-AAO">
+              <header>
+                <label for="AAO"><strong>AAO</strong> <small class="muted">proximal ascending aorta</small></label>
+                <span class="input-mm"><input type="number" id="AAO" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="AAO (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+            <article class="seg-card cusp" id="card-RCOR" hidden>
+              <header>
+                <label for="RCOR"><strong>RCOR</strong> <small class="muted">right coronary sinus–commissure</small></label>
+                <span class="input-mm"><input type="number" id="RCOR" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="RCOR (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+            <article class="seg-card cusp" id="card-LCOR" hidden>
+              <header>
+                <label for="LCOR"><strong>LCOR</strong> <small class="muted">left coronary sinus–commissure</small></label>
+                <span class="input-mm"><input type="number" id="LCOR" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="LCOR (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+            <article class="seg-card cusp" id="card-NONCOR" hidden>
+              <header>
+                <label for="NONCOR"><strong>NONCOR</strong> <small class="muted">non-coronary sinus–commissure</small></label>
+                <span class="input-mm"><input type="number" id="NONCOR" min="0" step="0.1" inputmode="decimal" placeholder="mm" aria-label="NONCOR (mm)" /> mm</span>
+                <span class="seg-summary"></span>
+              </header>
+              <div class="seg-body"></div>
+            </article>
+          </div>
+          <div id="copyAllWrap" hidden>
+            <button type="button" id="copyAll" class="copy-btn">Copy all statements</button>
+          </div>
+        </section>
+      </form>
 
       <details>
         <summary>How this works</summary>

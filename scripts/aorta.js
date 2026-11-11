@@ -123,29 +123,16 @@
   // ---- rendering ----
   const STATUS_LABEL = { dilated: "Dilated", small: "Small", normal: "Normal" };
 
-  function renderReferenceTable(s, heightM) {
-    const showWase = waseApplies(s);
-    const rows = activeSegments(s)
-      .map((seg) => {
-        const n = getRef("NORRE", seg, s);
-        const w = showWase ? getRef("WASE", seg, s) : null;
-        const cell = (ref) =>
-          ref
-            ? `${fmt(ref.lln * heightM)} – <strong>${fmt(ref.uln * heightM)}</strong>`
-            : `<span class="muted">n/a</span>`;
-        return `<tr><th scope="row">${SEGMENTS[seg].label}</th><td>${cell(n)}</td>${showWase ? `<td>${cell(w)}</td>` : ""}</tr>`;
-      })
-      .join("");
-    return `
-      <table class="ref-table">
-        <thead><tr><th>Segment</th><th>NORRE (mm)</th>${showWase ? "<th>WASE (mm)</th>" : ""}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-      <p class="note">Normal range (mean ± 2 SD) converted to mm at ${fmt(heightM * 100)} cm. Upper limit in bold.
-      ${showWase ? "" : "WASE values apply to end-diastole, leading edge only."}</p>`;
+  // Body of an empty card: normal range in mm at this height.
+  function rangesHtml(seg, s, heightM) {
+    const refs = ["NORRE", "WASE"].map((w) => getRef(w, seg, s)).filter(Boolean);
+    return `<p class="ranges">Normal at ${fmt(heightM * 100)} cm: ` +
+      refs.map((ref) => `${ref.name} <strong>${fmt(ref.lln * heightM)}–${fmt(ref.uln * heightM)} mm</strong>`).join(" · ") +
+      `</p>`;
   }
 
-  function renderSegmentCard(seg, mm, s, heightM) {
+  // Body of a measured card. Returns { summary, body, status, text }.
+  function measuredHtml(seg, mm, s, heightM) {
     const refs = ["NORRE", "WASE"].map((w) => getRef(w, seg, s)).filter(Boolean);
     const rRef = reportRefFor(seg, s);
     const rEv = evaluate(mm, heightM, rRef);
@@ -155,33 +142,41 @@
       .map((ref) => {
         const ev = evaluate(mm, heightM, ref);
         const mark = ref.name === rRef.name && refs.length > 1 ? ' <span class="muted" title="Used in report text">•</span>' : "";
+        const st = ev.status === "normal" ? "" : ` class="st-${ev.status}"`;
         return `<tr>
           <th scope="row">${ref.name}${mark}</th>
-          <td>${fmt(ref.mean)} <span class="muted">(${fmt(ev.expectedMm)} mm)</span></td>
-          <td>${fmt(ref.lln)}–${fmt(ref.uln)} <span class="muted">(${fmt(ev.llnMm)}–${fmt(ev.ulnMm)} mm)</span></td>
-          <td>${ev.pct}%</td>
-          <td>${zText(ev.z)}</td>
-          <td><span class="badge ${ev.status}">${STATUS_LABEL[ev.status]}</span></td>
+          <td>${fmt(ref.mean)}<small class="muted">${fmt(ev.expectedMm)} mm</small></td>
+          <td>${fmt(ref.lln)}–${fmt(ref.uln)}<small class="muted">${fmt(ev.llnMm)}–${fmt(ev.ulnMm)} mm</small></td>
+          <td${st}>${ev.pct}%</td>
+          <td${st}>${zText(ev.z)}</td>
         </tr>`;
       })
       .join("");
 
-    return `
-      <article class="seg-card ${rEv.status}">
-        <header>
-          <strong>${SEGMENTS[seg].label}</strong>
-          ${fmt(mm)} mm → <strong class="idx">${fmt(rEv.index)} mm/m</strong>
-          <span class="badge ${rEv.status}">${STATUS_LABEL[rEv.status]}</span>
-        </header>
+    return {
+      status: rEv.status,
+      text,
+      summary: `<strong class="idx">${fmt(rEv.index)} mm/m</strong>
+        <span class="badge ${rEv.status}">${STATUS_LABEL[rEv.status]}</span>
+        <span class="muted">${rEv.pct}% of expected</span>`,
+      body: `
         <div class="overflow-auto">
           <table class="seg-table">
-            <thead><tr><th>Ref</th><th>Expected (mm/m)</th><th>Normal (mm/m)</th><th>% exp</th><th>z</th><th></th></tr></thead>
+            <thead><tr><th>Ref</th><th>Expected<small class="muted">mm/m</small></th><th>Normal range<small class="muted">mm/m</small></th><th>% exp</th><th>z</th></tr></thead>
             <tbody>${rows}</tbody>
           </table>
         </div>
         <p class="statement">${text}</p>
-        <button type="button" class="copy-btn secondary outline" data-text="${encodeURIComponent(text)}">Copy to clipboard</button>
-      </article>`;
+        <button type="button" class="copy-btn secondary outline" data-text="${encodeURIComponent(text)}">Copy to clipboard</button>`,
+    };
+  }
+
+  function setCard(seg, status, summary, body) {
+    const card = $("card-" + seg);
+    card.classList.remove("dilated", "small", "normal");
+    if (status) card.classList.add(status);
+    card.querySelector(".seg-summary").innerHTML = summary;
+    card.querySelector(".seg-body").innerHTML = body;
   }
 
   function update() {
@@ -204,36 +199,22 @@
     const cmTyped = !isNaN(parseFloat($("heightCm").value));
     $("heightEcho").textContent = s.heightCm && !cmTyped ? `= ${fmt(s.heightCm)} cm` : "";
 
-    if (!s.heightCm || s.heightCm < 100 || s.heightCm > 250) {
-      $("refTable").innerHTML = "";
-      $("segResults").innerHTML = "";
-      $("copyAllWrap").hidden = true;
-      $("awaiting").hidden = false;
-      return;
-    }
-    $("awaiting").hidden = true;
-    const heightM = s.heightCm / 100;
+    const heightOk = s.heightCm && s.heightCm >= 100 && s.heightCm <= 250;
+    $("awaiting").hidden = !!heightOk;
+    const heightM = heightOk ? s.heightCm / 100 : null;
 
-    $("refTable").innerHTML = renderReferenceTable(s, heightM);
+    const statements = [];
+    activeSegments(s).forEach((seg) => {
+      if (!heightOk) return setCard(seg, null, "", "");
+      const mm = parseFloat($(seg).value);
+      if (isNaN(mm) || mm <= 0) return setCard(seg, null, "", rangesHtml(seg, s, heightM));
+      const r = measuredHtml(seg, mm, s, heightM);
+      statements.push(r.text);
+      setCard(seg, r.status, r.summary, r.body);
+    });
 
-    const measured = activeSegments(s)
-      .map((seg) => ({ seg, mm: parseFloat($(seg).value) }))
-      .filter((m) => !isNaN(m.mm) && m.mm > 0);
-
-    $("segResults").innerHTML = measured.map((m) => renderSegmentCard(m.seg, m.mm, s, heightM)).join("");
-
-    if (measured.length) {
-      const all = measured
-        .map((m) => {
-          const ref = reportRefFor(m.seg, s);
-          return statement(m.seg, evaluate(m.mm, heightM, ref), ref, s);
-        })
-        .join("\n");
-      $("copyAll").dataset.text = encodeURIComponent(all);
-      $("copyAllWrap").hidden = measured.length < 2;
-    } else {
-      $("copyAllWrap").hidden = true;
-    }
+    $("copyAll").dataset.text = encodeURIComponent(statements.join("\n"));
+    $("copyAllWrap").hidden = statements.length < 2;
   }
 
   // ---- clipboard ----
