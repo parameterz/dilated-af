@@ -4,7 +4,7 @@
 
 A single-page reference for the adult aortic root and proximal ascending aorta, indexed to height.
 
-It's built for a common situation at the echo machine: the aorta *looks* big, but indexing to body surface area says it's normal. Height indexing avoids the BSA problem (BSA rises with weight, which shrinks the indexed value in larger patients). This page gives the height-indexed answer, along with a sentence you can paste straight into the report.
+It's built for a common situation at the echo machine: the aorta *looks* big, but indexing to body surface area says it's normal. Height indexing avoids the BSA problem (BSA rises with weight, which shrinks the indexed value in larger patients). This page gives the height-indexed answer, along with a sentence you can paste straight into a preliminary report.
 
 ![Dilated AF screenshot](img/screenshot.png)
 
