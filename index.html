@@ -54,6 +54,19 @@
       .badge.normal { color: var(--normal); }
       .statement { background: var(--pico-code-background-color); padding: 0.75rem; border-radius: var(--pico-border-radius); font-size: 0.95em; }
       .copy-btn { width: auto; }
+      .ref-pick { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0; cursor: pointer; font-weight: 600; white-space: nowrap; }
+      .ref-pick input[type="radio"] { margin: 0; width: 1.25em; height: 1.25em; }
+      .seg-table tr.chosen th, .seg-table tr.chosen td { background: color-mix(in srgb, var(--pico-primary) 14%, transparent); }
+      .statement[contenteditable] { outline: 1px dashed transparent; cursor: text; margin-bottom: 0.5rem; }
+      .statement[contenteditable]:hover { outline-color: var(--pico-muted-border-color); }
+      .statement[contenteditable]:focus { outline: 1px solid var(--pico-primary); }
+      .stmt-tools { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; margin-bottom: 0.75rem; }
+      .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .chip { width: auto; margin: 0; padding: 0.2rem 0.65rem; font-size: 0.8em; border-radius: 999px;
+              background: transparent; color: var(--pico-muted-color); border: 1px solid var(--pico-muted-border-color); }
+      .chip.on { color: var(--pico-primary-inverse); background: var(--pico-primary-background); border-color: var(--pico-primary-background); }
+      .chip.on::before { content: "✓ "; }
+      .edited-flag { font-size: 0.8em; color: var(--pico-muted-color); }
       #copyAllWrap { margin-bottom: 2rem; }
       fieldset.opts label { margin-bottom: 0.5rem; }
       #diagram[open] .diagram-hint::after { content: "— click to hide"; }
@@ -129,21 +142,6 @@
           </div>
         </details>
 
-        <details>
-          <summary>Report options</summary>
-          <fieldset class="opts">
-            <label>
-              Reference used in report text
-              <select id="reportRef">
-                <option value="NORRE">NORRE</option>
-                <option value="WASE">WASE (age-specific; SOV &amp; STJ, end-diastole leading edge only)</option>
-              </select>
-            </label>
-            <p id="refNote" class="note" hidden>WASE doesn't apply to this timing/convention, so NORRE is used.</p>
-            <label><input type="checkbox" id="includeZ" role="switch" /> Include z-score in report text</label>
-          </fieldset>
-        </details>
-
         <button type="button" id="clearBtn" class="secondary outline">Clear patient</button>
         </div>
 
@@ -213,6 +211,13 @@
           the z-score is (index − mean) ÷ SD. With these references the upper limit falls at roughly
           122–126% of expected, depending on the segment. "Equivalent at this patient's height" is the limit (mm/m)
           multiplied by height (m).
+        </p>
+        <p>
+          <strong>Report text:</strong> where both references apply, tap the radio button next to NORRE or WASE to
+          choose which one a card's statement uses (your last choice becomes the default for the next patient).
+          The chips under each statement turn pieces of the sentence on or off for all cards, and are remembered.
+          You can also click the statement to edit it before copying; a change to the measurement or settings
+          rebuilds it.
         </p>
         <p>
           NORRE provides values for both timings and both edge conventions (plus sinus-to-commissure dimensions at
