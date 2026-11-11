@@ -41,6 +41,14 @@ Reference values are in [`scripts/data.js`](scripts/data.js) (mean and SD, mm/m)
 - Limits are mean ± 2 SD of the height-indexed value. A value is flagged when its rounded index (0.1 mm/m) falls outside that range.
 - This is a reference aid, not a diagnostic device. Use it alongside clinical judgment and your lab's own standards.
 
+## How to cite
+
+If you use this tool in a presentation, poster or paper, please cite it (GitHub's **"Cite this repository"** button gives APA and BibTeX):
+
+> Dyar D. *Dilated AF (Dilated Aorta Finder)*, version 2.0.0. 2026. https://parameterz.github.io/dilated-af/
+
+Please also cite the NORRE and/or WASE papers above for the reference values.
+
 ## Previous version
 
 The original two-page version (upper limits only) is still available at [parameterz.github.io/dilated-af/v1/](https://parameterz.github.io/dilated-af/v1/) and as release [v1.0](https://github.com/parameterz/dilated-af/releases/tag/v1.0).

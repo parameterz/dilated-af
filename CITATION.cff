@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use this tool, please cite it as below."
+type: software
+title: "Dilated AF (Dilated Aorta Finder)"
+abstract: >-
+  Height-indexed reference values for the aortic root and proximal
+  ascending aorta (NORRE, WASE), with lower and upper limits,
+  percent of expected, z-scores, and copy-ready report text.
+authors:
+  - family-names: Dyar
+    given-names: Dan
+version: 2.0.0
+date-released: 2026-11-11
+url: "https://parameterz.github.io/dilated-af/"
+repository-code: "https://github.com/parameterz/dilated-af"
+license: MIT
+keywords:
+  - echocardiography
+  - cardiology
+  - aorta
+  - aortic dilation
+  - reference values
+  - height indexing
+references:
+  - type: article
+    title: >-
+      Two-dimensional transthoracic echocardiographic normal reference
+      ranges for proximal aorta dimensions: results from the EACVI NORRE study
+    authors:
+      - family-names: Saura
+        given-names: Daniel
+      - name: "et al."
+    journal: "European Heart Journal - Cardiovascular Imaging"
+    year: 2017
+    volume: 18
+    issue: "2"
+    start: 167
+    end: 179
+    doi: 10.1093/ehjci/jew053
+  - type: article
+    title: >-
+      Normal Values of Aortic Root Size According to Age, Sex, and Race:
+      Results of the World Alliance of Societies of Echocardiography Study
+    authors:
+      - family-names: Patel
+        given-names: Hena N.
+      - name: "et al."
+    journal: "Journal of the American Society of Echocardiography"
+    year: 2022
+    volume: 35
+    issue: "3"
+    start: 267
+    end: 274
+    doi: 10.1016/j.echo.2021.09.011
