@@ -44,6 +44,8 @@
       .copy-btn { width: auto; }
       #copyAllWrap { margin-bottom: 2rem; }
       fieldset.opts label { margin-bottom: 0.5rem; }
+      #diagram[open] .diagram-hint::after { content: "— click to hide"; }
+      #diagram:not([open]) .diagram-hint::after { content: "— click to show"; }
     </style>
   </head>
   <body>
@@ -103,8 +105,8 @@
           </label>
         </div>
 
-        <details>
-          <summary>Measurement diagram (<span id="diagramLabel"></span>)</summary>
+        <details id="diagram" open>
+          <summary>Measurement diagram (<span id="diagramLabel"></span>) <small class="muted diagram-hint"></small></summary>
           <div id="images">
             <img data-show="diastole_leading" src="img/diastole_leading.png" alt="End-diastole, leading edge" />
             <img data-show="diastole_inside" src="img/diastole_inside.png" alt="End-diastole, inner edge" />

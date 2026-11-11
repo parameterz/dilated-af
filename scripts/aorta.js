@@ -288,6 +288,16 @@
     $("heightCm").focus();
   });
 
+  // diagram open/closed (open by default; remembered)
+  try {
+    if (localStorage.getItem("daf.diagramOpen") === "0") $("diagram").open = false;
+  } catch (e) {}
+  $("diagram").addEventListener("toggle", () => {
+    try {
+      localStorage.setItem("daf.diagramOpen", $("diagram").open ? "1" : "0");
+    } catch (e) {}
+  });
+
   loadPrefs();
   update();
 })();
