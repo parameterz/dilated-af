@@ -59,6 +59,6 @@ No build step and no dependencies: clone the repo and open `index.html` in a bro
 
 ## Author
 
-[Dan Dyar, MA, ACS, RDCS, FASE](https://www.linkedin.com/in/dan-dyar-ma-acs-rdcs-ae-pe-fe-fase/)
+[Dan Dyar, MA, ACS, RDCS, FASE](https://www.linkedin.com/in/dan-dyar-ma-acs-rdcs-ae-pe-fe-fase/) · ORCID [0000-0002-2025-8944](https://orcid.org/0000-0002-2025-8944)
 
 Reference images modified from [Oxborough et al.](https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004) and [Saura et al.](https://doi.org/10.1093/ehjci/jew053), used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

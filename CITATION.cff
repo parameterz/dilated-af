@@ -9,6 +9,7 @@ abstract: >-
 authors:
   - family-names: Dyar
     given-names: Dan
+    orcid: "https://orcid.org/0000-0002-2025-8944"
 version: 2.0.0
 date-released: 2026-11-11
 url: "https://parameterz.github.io/dilated-af/"
