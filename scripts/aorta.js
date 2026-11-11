@@ -157,7 +157,7 @@
   }
 
   const chipsHtml = () =>
-    `<div class="chips" role="group" aria-label="Statement contents">` +
+    `<div class="chips" aria-label="Statement contents">` +
     CHIPS.map(
       (c) => `<button type="button" class="chip${chipOn[c.key] ? " on" : ""}" data-chip="${c.key}" aria-pressed="${chipOn[c.key]}">${c.label}</button>`
     ).join("") +
