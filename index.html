@@ -6,144 +6,208 @@
     <title>Dilated AF (Dilated Aorta Finder)</title>
     <meta
       name="description"
-      content="Detailed echocardiographic analysis of aortic size measurements to assist with the evaluation of aortic dilation."
+      content="Height-indexed reference values for the aortic root and proximal ascending aorta (NORRE and WASE), with lower and upper limits, percent of expected, z-scores, and report text."
     />
-    <meta
-      name="keywords"
-      content="echocardiography, aortic dilation, aortic size, cardiology, heart health, medical analysis"
-    />
-    <meta name="author" content="Dan Dyar, MA, RDCS, FASE" />
+    <meta name="keywords" content="echocardiography, aortic dilation, aortic root, height indexing, NORRE, WASE" />
+    <meta name="author" content="Dan Dyar, MA, ACS, RDCS, FASE" />
     <link rel="stylesheet" href="css/pico.slate.min.css" />
     <style>
-      /* Custom CSS for emphasizing the results table */
-      #resultsContainer table {
-        width: 100%;
-        margin: 20px 0;
-        font-size: 1.2em;
-        border-collapse: collapse;
+      :root {
+        --dilated: #ff6b6b;
+        --small: #6bb8ff;
+        --normal: #7bd88f;
       }
-      #resultsContainer th,
-      #resultsContainer td {
-        padding: 10px;
-        border: 1px solid #382f2f;
-      }
+      header.page h1 { margin-bottom: 0; }
+      header.page p { color: var(--pico-muted-color); }
+      .muted { color: var(--pico-muted-color); }
+      .note { font-size: 0.85em; color: var(--pico-muted-color); }
+      .height-row { display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap; }
+      .height-row label { flex: 1 1 7rem; margin-bottom: 0; }
+      .height-row .or { padding-bottom: 0.9rem; color: var(--pico-muted-color); }
+      #heightEcho { font-size: 0.85em; color: var(--pico-muted-color); min-height: 1.2em; }
+      .meas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0 1rem; }
+      #images img { display: block; max-width: 100%; margin: 0.5rem auto; }
+      .ref-table { font-size: 1.1em; }
+      .ref-table td, .ref-table th { padding: 0.5rem 0.75rem; }
+      .seg-card header { display: flex; gap: 0.75rem; align-items: baseline; flex-wrap: wrap; }
+      .seg-card .idx { font-size: 1.2em; }
+      .seg-card.dilated { border-left: 4px solid var(--dilated); }
+      .seg-card.small { border-left: 4px solid var(--small); }
+      .seg-card.normal { border-left: 4px solid var(--normal); }
+      .seg-table { font-size: 0.9em; margin-bottom: 0.75rem; }
+      .seg-table td, .seg-table th { padding: 0.35rem 0.5rem; white-space: nowrap; }
+      .badge { font-size: 0.8em; font-weight: 700; padding: 0.1em 0.5em; border-radius: 0.4em; border: 1px solid currentColor; }
+      .badge.dilated { color: var(--dilated); }
+      .badge.small { color: var(--small); }
+      .badge.normal { color: var(--normal); }
+      .statement { background: var(--pico-code-background-color); padding: 0.75rem; border-radius: var(--pico-border-radius); font-size: 0.95em; }
+      .copy-btn { width: auto; }
+      #copyAllWrap { margin-bottom: 2rem; }
+      fieldset.opts label { margin-bottom: 0.5rem; }
     </style>
   </head>
   <body>
     <main class="container">
-      <header>
+      <header class="page">
         <h1>Dilated AF</h1>
-        <p>(Dilated Aorta Finder)</p>
+        <p>(Dilated Aorta Finder) — height-indexed aortic dimensions</p>
       </header>
-      <p>First, measure like this:</p>
-      <div class="image-stage">
-        <img src="img/measure-like-this.png" />
-      </div>
-      <form id="aortaForm">
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
-        </select>
-        <label for="ageGroup">Age Group:</label>
-        <select id="ageGroup" name="ageGroup" required>
-          <option value="18-40">18-40</option>
-          <option value="41-65">41-65</option>
-          <option value=">65">>65</option>
-        </select>
+
+      <form id="aortaForm" autocomplete="off">
+        <div class="grid">
+          <label>
+            Sex
+            <select id="sex">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </label>
+          <label>
+            Age group <small class="muted">(WASE)</small>
+            <select id="ageGroup">
+              <option value="18-40">18–40</option>
+              <option value="41-65">41–65</option>
+              <option value=">65">&gt;65</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="height-row">
+          <label>Height (cm)
+            <input type="number" id="heightCm" min="100" max="250" step="0.1" inputmode="decimal" />
+          </label>
+          <span class="or">or</span>
+          <label>ft
+            <input type="number" id="heightFeet" min="3" max="8" step="1" inputmode="numeric" />
+          </label>
+          <label>in
+            <input type="number" id="heightInches" min="0" max="11.9" step="0.1" inputmode="decimal" />
+          </label>
+        </div>
+        <p id="heightEcho"></p>
+
+        <div class="grid">
+          <label>
+            Timing
+            <select id="timing">
+              <option value="diastole">End-diastole</option>
+              <option value="systole">Mid-systole</option>
+            </select>
+          </label>
+          <label>
+            Convention
+            <select id="convention">
+              <option value="leading">Leading edge – leading edge</option>
+              <option value="inside">Inner edge – inner edge</option>
+            </select>
+          </label>
+        </div>
+
+        <details>
+          <summary>Measurement diagram (<span id="diagramLabel"></span>)</summary>
+          <div id="images">
+            <img data-show="diastole_leading" src="img/diastole_leading.png" alt="End-diastole, leading edge" />
+            <img data-show="diastole_inside" src="img/diastole_inside.png" alt="End-diastole, inner edge" />
+            <img data-show="systole_leading" src="img/systole_leading.png" alt="Mid-systole, leading edge" />
+            <img data-show="systole_inside" src="img/systole_inside.png" alt="Mid-systole, inner edge" />
+            <img data-show="sax" src="img/sax_diastole_inside.png" alt="Short axis, end-diastole, inner edge: sinus-to-commissure" />
+          </div>
+        </details>
+
         <fieldset>
-          <legend>Enter Height</legend>
-          <label for="heightCm">(cm):</label>
-          <input
-            type="number"
-            id="heightCm"
-            name="heightCm"
-            min="100"
-            max="250"
-            step="0.1"
-          />
-          <p>-OR-</p>
-          <label for="heightFeet">(feet):</label>
-          <input
-            type="number"
-            id="heightFeet"
-            name="heightFeet"
-            min="3"
-            max="8"
-          />
-          <label for="heightInches">(inches):</label>
-          <input
-            type="number"
-            id="heightInches"
-            name="heightInches"
-            min="0"
-            max="11"
-          />
+          <legend>Measurements (mm) <small class="muted">— optional; leave blank to see reference ranges only</small></legend>
+          <div class="meas-grid">
+            <label>SOV<input type="number" id="SOV" min="0" step="0.1" inputmode="decimal" /></label>
+            <label>STJ<input type="number" id="STJ" min="0" step="0.1" inputmode="decimal" /></label>
+            <label>AAO<input type="number" id="AAO" min="0" step="0.1" inputmode="decimal" /></label>
+            <label class="cusp" hidden>RCOR<input type="number" id="RCOR" min="0" step="0.1" inputmode="decimal" /></label>
+            <label class="cusp" hidden>LCOR<input type="number" id="LCOR" min="0" step="0.1" inputmode="decimal" /></label>
+            <label class="cusp" hidden>NONCOR<input type="number" id="NONCOR" min="0" step="0.1" inputmode="decimal" /></label>
+          </div>
         </fieldset>
-        <button type="submit">Show Results</button>
+
+        <details>
+          <summary>Report options</summary>
+          <fieldset class="opts">
+            <label>
+              Reference used in report text
+              <select id="reportRef">
+                <option value="NORRE">NORRE</option>
+                <option value="WASE">WASE (age-specific; SOV &amp; STJ, end-diastole leading edge only)</option>
+              </select>
+            </label>
+            <p id="refNote" class="note" hidden>WASE doesn't apply to this timing/convention, so NORRE is used.</p>
+            <label><input type="checkbox" id="includeZ" role="switch" /> Include z-score in report text</label>
+          </fieldset>
+        </details>
+
+        <button type="button" id="clearBtn" class="secondary outline">Clear patient</button>
       </form>
+
       <hr />
+
       <section id="results">
-        <h2>Results:</h2>
-        <p id="awaitingResults">
-          Enter a valid height (in cm or feet & inches) to see the predicted
-          upper limits of normal (ULN).
-        </p>
-        <p id="resultsDescription">
-          These are the upper limits of normal (ULN). Measured values that are
-          greater than the displayed limits are considered dilated.
-        </p>
-        <div id="resultsContainer"></div>
+        <h2>Results</h2>
+        <p id="awaiting" class="muted">Enter a height (100–250 cm) to see reference ranges.</p>
+        <div id="refTable"></div>
+        <div id="segResults"></div>
+        <div id="copyAllWrap" hidden>
+          <button type="button" id="copyAll" class="copy-btn">Copy all statements</button>
+        </div>
       </section>
-      <section>
-        <button id="diveDeeperBtn">Want to dive deeper?</button>
-      </section>
+
+      <details>
+        <summary>How this works</summary>
+        <p>
+          Each measurement is divided by height in meters to give an index (mm/m), which is compared with the
+          reference mean ± 2 SD. <em>% of expected</em> is the index divided by the reference mean;
+          the z-score is (index − mean) ÷ SD. With these references the upper limit falls at roughly
+          122–126% of expected, depending on the segment. "Equivalent at this patient's height" is the limit (mm/m)
+          multiplied by height (m).
+        </p>
+        <p>
+          NORRE provides values for both timings and both edge conventions (plus sinus-to-commissure dimensions at
+          end-diastole, inner edge). WASE values are age-specific, were measured at end-diastole using the leading
+          edge convention, and cover SOV and STJ only.
+        </p>
+      </details>
+
       <hr />
       <section id="citations">
         <h3>Citations</h3>
         <article>
-          <cite
-            >Reference image modified from
-            <a
-              href="https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004"
-              >Oxborough et al.</a
-            >
-            used under
-            <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a
-            >.</cite
-          >
-        </article>
-        <article>
           <h4>NORRE Study</h4>
           <p>
-            Saura, D., et al. (2017). Two-dimensional transthoracic
-            echocardiographic normal reference ranges for proximal aorta
-            dimensions: results from the EACVI NORRE study. European heart
-            journal. Cardiovascular Imaging, 18(2), 167–179.
-            <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank"
-              >https://doi.org/10.1093/ehjci/jew053</a
-            >
+            Saura D, et al. Two-dimensional transthoracic echocardiographic normal reference ranges for proximal aorta
+            dimensions: results from the EACVI NORRE study. Eur Heart J Cardiovasc Imaging. 2017;18(2):167–179.
+            <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank" rel="noopener">https://doi.org/10.1093/ehjci/jew053</a>
           </p>
         </article>
         <article>
           <h4>WASE Study</h4>
           <p>
-            Patel, H. N., et al., WASE Investigators (2022). Normal Values of
-            Aortic Root Size According to Age, Sex, and Race: Results of the
-            World Alliance of Societies of Echocardiography Study. Journal of
-            the American Society of Echocardiography: official publication of
-            the American Society of Echocardiography, 35(3), 267–274.
-            <a href="https://doi.org/10.1016/j.echo.2021.09.011" target="_blank"
-              >https://doi.org/10.1016/j.echo.2021.09.011</a
-            >
+            Patel HN, et al.; WASE Investigators. Normal Values of Aortic Root Size According to Age, Sex, and Race:
+            Results of the World Alliance of Societies of Echocardiography Study. J Am Soc Echocardiogr.
+            2022;35(3):267–274.
+            <a href="https://doi.org/10.1016/j.echo.2021.09.011" target="_blank" rel="noopener">https://doi.org/10.1016/j.echo.2021.09.011</a>
           </p>
+        </article>
+        <article>
+          <cite>
+            Reference images modified from
+            <a href="https://echo.biomedcentral.com/articles/10.1530/ERP-14-0004" target="_blank" rel="noopener">Oxborough et al.</a>
+            and <a href="https://doi.org/10.1093/ehjci/jew053" target="_blank" rel="noopener">Saura et al.</a>, used under
+            <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+          </cite>
         </article>
       </section>
       <footer>
-        <p><a href="https://www.linkedin.com/in/dan-dyar-ma-acs-rdcs-ae-pe-fe-fase-6387b448/"> Dan Dyar, MA, ACS, RDCS, FASE &copy;2025</a></p>
+        <p>
+          <a href="https://www.linkedin.com/in/dan-dyar-ma-acs-rdcs-ae-pe-fe-fase/">Dan Dyar, MA, ACS, RDCS, FASE</a> &copy;2024–2026
+        </p>
       </footer>
     </main>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/aorta.js"></script>
   </body>
 </html>
